@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            min-height: 100vh;
+            font-family: Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #06152e, #082e68, #0755bd);
+            color: white;
+            padding: 25px;
+        }
+        
+        button, input {
+            font: inherit;
+        }
+        
+        button {
+            cursor: pointer;
+        }
+        
+        .player {
+            max-width: 1100px;
+            min-height: 650px;
+            margin: auto;
+            overflow: hidden;
+            border: 1px solid #2875ce;
+            border-radius: 24px;
+            background: rgba(4, 20, 49, .88);
+            box-shadow: 0 20px 60px #0005;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 24px;
+            background: linear-gradient(90deg, #0756c9, #10316d);
+            border-bottom: 1px solid #28599a;
+        }
+        
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .logo span {
+            color: #5eb4ff;
+        }
+        
+        .add-btn, .submit-btn {
+            border: none;
+            border-radius: 12px;
+            padding: 13px 18px;
+            color: white;
+            background: #1685ff;
+            transition: .2s;
+        }
+        
+        .add-btn:hover, .submit-btn:hover {
+            background: #43a1ff;
+            transform: translateY(-1px);
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 580px;
+        }
+        
+        .sidebar {
+            padding: 24px 18px;
+            background: #061a3a;
+            border-left: 1px solid #153d76;
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .count {
+            color: #7ec0ff;
+            font-size: 13px;
+        }
+        
+        .song {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: .2s;
+            border: 1px solid transparent;
+        }
+        
+        .song:hover, .song.active {
+            background: #103b79;
+            border-color: #1c68c9;
+        }
+        
+        .song img {
+            width: 53px;
+            height: 53px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #123969;
+        }
+        
+        .song-info {
+            min-width: 0;
+            flex: 1;
+        }
+        
+        .song-info h4 {
+            font-size: 14px;
+            margin-bottom: 7px;
+            overflow-wrap: anywhere;
+        }
+        
+        .song-info p {
+            color: #8db9ef;
+            font-size: 12px;
+        }
+        
+        .fav {
+            color: #8db9ef;
+            background: none;
+            border: none;
+            font-size: 22px;
+        }
+        
+        .fav.liked {
+            color: #35a0ff;
+        }
+        
+        .main {
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cover {
+            width: 240px;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 22px;
+            background: #123969;
+            border: 1px solid #3186e9;
+            box-shadow: 0 15px 40px #0005;
+        }
+        
+        .track-title {
+            font-size: 27px;
+            margin-top: 25px;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+        
+        .artist {
+            margin-top: 10px;
+            color: #8db9ef;
+        }
+        
+        .progress-wrap {
+            width: 100%;
+            max-width: 530px;
+            margin-top: 30px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            accent-color: #1685ff;
+            cursor: pointer;
+        }
+        
+        .times {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #8db9ef;
+            font-size: 12px;
+            direction: ltr;
+        }
+        
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            margin-top: 28px;
+        }
+        
+        .control {
+            color: white;
+            border: none;
+            background: none;
+            font-size: 25px;
+            min-width: 35px;
+        }
+        
+        .play {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            color: white;
+            border: none;
+            font-size: 27px;
+            background: linear-gradient(135deg, #42a6ff, #0766e9);
+            box-shadow: 0 8px 25px #1685ff55;
+        }
+        
+        .volume {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 200px;
+            margin-top: 28px;
+            color: #8db9ef;
+        }
+        
+        dialog {
+            width: min(440px, calc(100% - 30px));
+            margin: 5rem auto;
+            display: block;
+            padding: 25px;
+            border: 1px solid #2875ce;
+            border-radius: 20px;
+            color: white;
+            background: #082653;
+            box-shadow: 0 20px 60px #0009;
+        }
+        
+        dialog::backdrop {
+            background: #0009;
+            backdrop-filter: blur(5px);
+        }
+        
+        dialog h2 {
+            margin-bottom: 20px;
+        }
+        
+        .form-field {
+            display: block;
+            width: 100%;
+            margin: 12px 0;
+            padding: 13px;
+            border: 1px solid #28558b;
+            border-radius: 10px;
+            color: white;
+            background: #061a3a;
+            outline: none;
+        }
+        
+        .form-field:focus {
+            border-color: #1685ff;
+        }
+        
+        .form-field::placeholder {
+            color: #82a8d6;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        
+        .form-actions button {
+            flex: 1;
+        }
+        
+        .cancel-btn {
+            background: #17365e;
+            border: 1px solid #315580;
+            color: white;
+            border-radius: 12px;
+            padding: 13px;
+        }
+        
+        .empty {
+            text-align: center;
+            color: #8db9ef;
+            line-height: 2;
+            padding: 20px 5px;
+        }
+        
+        @media (max-width: 700px) {
+            body {
+                padding: 10px;
+            }
+        
+            .content {
+                grid-template-columns: 1fr;
+            }
+        
+            .sidebar {
+                border-left: none;
+                border-bottom: 1px solid #153d76;
+            }
+        
+            .main {
+                padding: 28px 18px;
+            }
+        
+            .cover {
+                width: 200px;
+                height: 200px;
+            }
+        
+            header {
+                padding: 18px;
+            }
+        
+            .logo {
+                font-size: 20px;
+            }
+        
+            .controls {
+                gap: 12px;
+            }
+
+        }
+
+        .ahang h1{
+            display: flex;
+            background-color: black;
+            border-radius: 10%; 
+            margin-top: 3px;
+            font-weight: 300;
+            
+
+        }
+
+        .nay{
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        </style>
+    
+</head>
+<body>
+
+    <div class="player">
+    
+        <header>
+            <div class="logo">♫ <span>Blue</span> Music</div>
+        </header>
+    
+        <div class="content">
+    
+            <aside class="sidebar">
+                <div class="section-title">
+                    <h3>لیست آهنگ‌ها</h3>
+                    <span class="count" id="songCount">۰ آهنگ</span>
+                </div>
+    
+                <div id="musicList">
+                    <div class="empty">
+                        هنوز آهنگی اضافه نکردی 🎵
+                        <br>
+                        از دکمه بالا شروع کن!
+                    </div>
+                </div>
+            </aside>
+    
+            <main class="main">
+                <img
+                    class="cover"
+                    id="cover"
+                    alt="کاور آهنگ"
+                    src="https://placehold.co/400x400/0b3470/ffffff?text=Blue+Music"
+                >
+    
+                <h1 class="track-title" id="trackName">موزیکی انتخاب نشده</h1>
+                <p class="artist" id="artistName">نام خواننده</p>
+    
+                    </div>
+                </div>
+    
+              
+    
+                
+    
+                <audio id="audio" src="" class="nay" controls > </audio>
+            </main>
+    
+        </div>
+    </div>
+    
+    <dialog id="musicDialog">
+        <h2>＋ افزودن آهنگ جدید</h2>
+    
+        <div id="musicForm">
+            <input class="form-field" name="name" id="title"
+                   placeholder="نام آهنگ" required>
+    
+            <input class="form-field" name="artist" id="Artist"
+                   placeholder="نام خواننده" required>
+    
+            <input class="form-field" name="image" id="image"
+                    placeholder="لینک عکس کاور (اختیاری)">
+    
+            <input class="form-field" name="file" id="File"
+                    placeholder="لینک فایل MP3 آهنگ" >
+    
+            <div class="form-actions">
+                <button class="submit-btn" type="submit" onclick="insertMusic()">افزودن آهنگ</button>
+                <button class="cancel-btn" type="button" id="closeForm">
+                    انصراف
+                </button>
+            </div>
+        </div>
+    </dialog>
+    
+    
+
+    <script>
+
+        const musicElement = document.getElementById('musicList')
+
+        const musicList = [  ]
+    
+    
+       class Music{
+           constructor (image , name , artist  , file){
+            this.image = image
+            this.name = name
+            this.artist = artist
+            this.file = file
+            this.isFav = false
+    
+            this.toggleRead = ()=>{
+                 
+               this.isFav = !this.isFav
+    
+            }
+           }
+    
+    
+        
+    
+            
+    
+       } 
+       function insertMusic(){
+
+        const title = document.getElementById('title').value
+        const Artist = document.getElementById('Artist').value
+        const cover = document.getElementById('image').value
+        const File = document.getElementById('File').value
+
+         const music = new Music(cover , title ,Artist , File)
+
+         musicList.push(music)
+
+         console.log(musicList);
+
+         showMusic ( )
+
+         
+
+
+
+
+       }
+    
+    
+
+       function showMusic(){
+        musicElement.innerHTML = ' '
+        musicList.forEach((item , index)=>{
+            musicElement.innerHTML += `
+            <div class="ahang" onclick="playMusic(${index})">
+                <h1>
+                    ${item.name}
+                    
+                    </h1>
+                
+                </div>
+
+
+            
+            `
+
+        })
+       }
+
+       function playMusic(index){
+        console.log(index);
+        console.log(musicList[index]);
+
+        let music = musicList[index]
+
+
+        const cover = document.getElementById('cover')
+        const artist = document.getElementById('artistName')
+        const musicName = document.getElementById('trackName')
+        const audio = document.getElementById('audio')
+        cover.src = music.image
+        artist.innerText = music.artist
+        musicName.innerText = music.name
+        audio.src = music.file
+        
+       }
+            
+
+
+       
+        
+       
+    
+    
+    
+    
+    </script>
+    
+    
+</body>
+</html>

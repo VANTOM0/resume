@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .item{
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+    </style>
+</head>
+<body>
+    
+   <ul id="myList">
+       <li>Kasra</li> <button>حذف</button> <button>تماس</button>
+       <li>Melody</li>
+        <li>Samyar</li>
+        <li>Ahoora</li>
+   </ul>
+   <input type="text" id="newStudents">
+   <button onclick="addToList()">ثبت کن</button>
+
+    <script>
+
+        const myList = document.getElementById('myList')
+
+        const students = [ 'Kasra' , 'Melody' , 'VANTOM' ,'AZERIX']
+
+        // const index = prompt('')
+        // // students.splice(index -1, 1)
+        // const name = prompt('ENTER YOUR NAME')
+        // console.log(students)
+        // console.log(students.length)
+        // students.push(name)
+        // console.log(students)
+        // console.log(students.length)
+        // console.log(students[0])
+        // let x = 0
+
+
+
+    
+
+
+
+        showList()
+
+        function showList( ){
+            myList.innerHTML=''
+            students.forEach((item , index)=>
+                myList.innerHTML += `
+                    <li class='item'>
+                        <h3>
+                            ${item}
+                        </h3>
+                        <button onclick='deletItem(${index})'>
+                            حذف
+                        </button>
+                    </li>
+                `
+            )
+        }
+
+        function deletItem( index ){
+            students.splice(index,1)
+            console.log(students)
+            showList()
+        }
+
+        function sayHello(){
+            alert('Hello')
+        }
+        function addToList(){
+            const newStudents = document.getElementById('newStudents').value 
+            console.log(newStudents);
+            students.push(newStudents)
+            showList()
+        }
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

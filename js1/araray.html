@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <ol id="myList">
+
+    </ol>
+
+
+<script>
+    
+    const myList = document.getElementById('myList')
+
+    
+    const students = [ 'Kasra' , 'Melody' , 'VANTOM' ,'AZERIX']
+
+    const index = prompt('')
+    // students.splice(index -1, 1)
+    const name = prompt('ENTER YOUR NAME')
+    console.log(students)
+    console.log(students.length)
+    students.push(name)
+    console.log(students)
+    console.log(students.length)
+    console.log(students[0])
+    let x = 0
+   
+
+
+
+    for ( let i = 0 ; i < students.length ; i++){
+        myList.innerHTML += `<li> ${students[i] }</li>`
+    }
+
+
+    // for ( let i = 0 ; i < students.length ; i++){
+    //     alert(students[i])
+    // }
+
+
+
+
+    
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

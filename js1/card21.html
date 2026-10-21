@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex; justify-content: space-evenly; background-color: rgb(1, 63, 1);font-weight: 900;font-family: 'Courier New', Courier, monospace;color: white;
+    
+    <div class="">
+        <h3>My Point Is</h3>
+        <h2 id="userPoint"></h2>
+        <div id="userCard">
+    
+        </div>
+
+    </div>
+
+    <button class="btn" id="hitMeBtn" onclick="getCard()">HIT ME</button>
+    <button class="btn" id="imDoneBtn" onclick="imDone()">IM DONE</button>
+
+    <div class="">
+        <h3>System Point Is</h3>
+        <h2 id="systemPoint"></h2>
+        <div id="systemCard">
+    
+        </div>
+
+
+    </div>
+
+
+    <script>
+        const userPointElement = document.getElementById('userPoint')
+        const userCardsElement = document.getElementById('userCard')
+
+        const systemPointElement = document.getElementById('systemPoint')
+        const systemCardsElement = document.getElementById('systemCard')
+
+        const hitMeBtn = document.getElementById('hitMeBtn')
+        const imDoneBtn = document.getElementById('imDoneBtn')
+
+        // const winner = document.getElementById('winner')
+
+        const cards = [2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 'J' , 'Q' , 'K' , 'A']
+        let userPoint = 0
+        let userCards = []
+
+        let systemPoint = 0
+        let systemCards = []
+
+        function getCard( player='user' ){
+            let randomNumber = Math.ceil( Math.random() * 12 )
+            let randomCard = cards[randomNumber]
+            let point = 0
+            if( randomCard == 'A'){
+                point += 11
+            }else if ( (randomCard == 'J') || (randomCard == 'Q')||( randomCard == 'K')    ) {
+                point += 10
+            }else{
+                point += randomCard
+            }if(player =='user'){
+                userPoint += point
+                userCards.push(randomCard)
+                userPointElement.innerText = userPoint
+                userCardsElement.innerHTML = '' 
+                userCards.forEach((card)=>{
+                    userCardsElement.innerHTML += `<h1>${card}</h1>`
+                })
+                
+            }else{
+                systemPoint += point
+                systemCards.push(randomCard)
+                systemPointElement.innerText = systemPoint
+                systemCardsElement.innerHTML = '' 
+                systemCards.forEach((card)=>{
+                    systemCardsElement.innerHTML += `<h1>${card}</h1>`
+                })
+                
+            }
+            
+            console.log( randomCard)
+            console.log( userPoint )
+        }
+        getCard()
+        getCard()
+        
+        // function winner(){
+        //     if(point == 21){
+        //         alert('You Win')
+        //     }
+        // }
+
+
+        function imDone(){
+            getCard('system')
+            getCard('system')
+            hitMeBtn.disabled = true
+            imDoneBtn.disabled = true
+
+            if( (systemPoint < userPoint) && ( userPoint < 21)){
+                setTimeout(()=> {
+                    getCard('system')
+
+                }, 1000);
+            
+
+            }
+        }
+
+        // function lose(){
+        //     if( systemPoint > 21) && ( userPoint > 21)
+        // }
+        
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
